@@ -79,9 +79,6 @@ class TasksListUpdateDetailRemove(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TasksListSerializer
 
 
-class UserViewSet(ModelViewSet):
+class SignUp(generics.CreateAPIView):
+    queryset = User.objects.all()
     serializer_class = UserSerializer
-    lookup_field = "username"
-
-    def get_queryset(self):
-        return User.objects.all()

@@ -1,15 +1,13 @@
 from django.urls import path, include
 from rest_framework.routers import SimpleRouter
 
-from .views_api import TaskCreateList, TaskUpdateDetailRemove, UserViewSet, TasksListCreateList, \
+from .views_api import TaskCreateList, TaskUpdateDetailRemove, TasksListCreateList, \
     TasksListUpdateDetailRemove
 from django.views.generic import TemplateView
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 from django.urls import path
 
-user_router = SimpleRouter()
-user_router.register("user", UserViewSet, basename="user")
 
 urlpatterns = [
     path('task/', TaskCreateList.as_view(), name="task_list_create_api"),
@@ -20,4 +18,3 @@ urlpatterns = [
     path('tasks_list/<int:task_list_pk>/task/<int:pk>/', TaskUpdateDetailRemove.as_view(), name="task_update_detail_remove_api"),
 
 ]
-urlpatterns += user_router.urls
