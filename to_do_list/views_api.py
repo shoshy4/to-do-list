@@ -2,10 +2,14 @@ from django.contrib.auth.models import User
 from django.db.models import QuerySet
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from rest_framework import generics
+from django_filters import rest_framework as filters
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet
 
+from .filters import TaskFilter
 from .models import Task, TasksList
 from .permissions import IsOwnerOrReadOnly, IsTaskOwnerOrReadOnly
 from .serializers import TasksListSerializer, TaskSerializer, UserSerializer
@@ -19,14 +23,16 @@ from django.contrib.auth import authenticate, login
 class TaskCreateList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsTaskOwnerOrReadOnly]
     serializer_class = TaskSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = TaskFilter
 
     def get_queryset(self):
         tasks = Task.objects.all()
         if self.kwargs.get('task_list_pk') is None:
             return tasks.filter(task_owner=self.request.user).order_by('-created_date')
         else:
-            return tasks.filter(task_owner=self.request.user, task_list_id=self.kwargs.get('task_list_pk')).order_by('-created_date')
-        # return Task.objects.filter(task_owner=self.request.user, task_list=None).order_by('-created_date')
+            return tasks.filter(task_owner=self.request.user, task_list_id=self.kwargs.get('task_list_pk')).order_by(
+                '-created_date')
 
     def perform_create(self, serializer):
         if self.kwargs.get('task_list_pk') is None:

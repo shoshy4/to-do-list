@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'to_do_list',
     'rest_framework',
     'rest_framework_simplejwt',
+    'django_filters',
 ]
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=4),
@@ -54,6 +55,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication'
     ],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 
 }
 MIDDLEWARE = [
