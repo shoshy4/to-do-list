@@ -11,7 +11,7 @@ from to_do_list.views_api import SignUp
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/signup/', SignUp.as_view(), name='token_obtain_pair'),
+    path('api/signup/', SignUp.as_view(), name='sign_up'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('', include('to_do_list.urls')),
 ]

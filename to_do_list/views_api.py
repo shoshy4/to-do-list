@@ -23,6 +23,7 @@ from django.contrib.auth import authenticate, login
 class TaskCreateList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsTaskOwnerOrReadOnly]
     serializer_class = TaskSerializer
+    pagination_class = PageNumberPagination
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = TaskFilter
 
@@ -60,6 +61,7 @@ class TaskUpdateDetailRemove(generics.RetrieveUpdateDestroyAPIView):
 class TasksListCreateList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = TasksListSerializer
+    pagination_class = PageNumberPagination
 
     def get_queryset(self):
         # return Task.objects.filter(task_owner=self.request.user, task_list=None).order_by('-created_date')
