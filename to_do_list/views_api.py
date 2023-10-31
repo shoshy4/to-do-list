@@ -19,9 +19,11 @@ from rest_framework import status, generics, mixins
 from django.utils import timezone
 from django.contrib.auth import authenticate, login
 
+# TODO: Убрать не используемые импорты
+
 
 class TaskCreateList(generics.ListCreateAPIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsTaskOwnerOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsTaskOwnerOrReadOnly]  # TODO: Другие пользователи не должны чужие читать задачи
     serializer_class = TaskSerializer
     pagination_class = PageNumberPagination
     filter_backends = (filters.DjangoFilterBackend,)
@@ -32,8 +34,10 @@ class TaskCreateList(generics.ListCreateAPIView):
         if self.kwargs.get('task_list_pk') is None:
             return tasks.filter(task_owner=self.request.user).order_by('-created_date')
         else:
-            return tasks.filter(task_owner=self.request.user, task_list_id=self.kwargs.get('task_list_pk')).order_by(
-                '-created_date')
+            return tasks.filter(
+                task_owner=self.request.user,
+                task_list_id=self.kwargs.get('task_list_pk')
+            ).order_by('-created_date')
 
     def perform_create(self, serializer):
         if self.kwargs.get('task_list_pk') is None:
@@ -45,6 +49,7 @@ class TaskCreateList(generics.ListCreateAPIView):
 
 class TaskUpdateDetailRemove(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsTaskOwnerOrReadOnly]
+    serializer_class = TaskSerializer
 
     def get_queryset(self):
         tasks = Task.objects.all()
@@ -53,9 +58,6 @@ class TaskUpdateDetailRemove(generics.RetrieveUpdateDestroyAPIView):
         else:
             return tasks.filter(task_owner=self.request.user, task_list_id=self.kwargs.get('task_list_pk')).order_by(
                 '-created_date')
-        # return Task.objects.filter(task_owner=self.request.user, task_list=None).order_by('-created_date')
-
-    serializer_class = TaskSerializer
 
 
 class TasksListCreateList(generics.ListCreateAPIView):
@@ -64,7 +66,6 @@ class TasksListCreateList(generics.ListCreateAPIView):
     pagination_class = PageNumberPagination
 
     def get_queryset(self):
-        # return Task.objects.filter(task_owner=self.request.user, task_list=None).order_by('-created_date')
         tasks = TasksList.objects.all()
         return tasks.filter(owner=self.request.user).order_by('-created_date')
 
@@ -74,11 +75,10 @@ class TasksListCreateList(generics.ListCreateAPIView):
 
 class TasksListUpdateDetailRemove(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    serializer_class = TasksListSerializer
 
     def get_queryset(self):
         return TasksList.objects.filter(owner=self.request.user).order_by('-created_date')
-
-    serializer_class = TasksListSerializer
 
 
 class SignUp(generics.CreateAPIView):

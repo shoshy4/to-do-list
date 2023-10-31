@@ -13,8 +13,8 @@ class TasksList(models.Model):
 
 
 class Task(models.Model):
-    task_list = models.ForeignKey('to_do_list.TasksList', blank=True, null=True, on_delete=models.CASCADE, related_name='task_list')
-    task_owner = models.ForeignKey('auth.User', related_name='task', on_delete=models.CASCADE)
+    task_list = models.ForeignKey('to_do_list.TasksList', blank=True, null=True, on_delete=models.CASCADE, related_name='task_list')  # TODO: поменять related_name на tasks, не забывать про длину строки максимум 120 символов
+    task_owner = models.ForeignKey('auth.User', related_name='task', on_delete=models.CASCADE) # TODO: поменять related_name на tasks, переделать в owner
     title = models.CharField(max_length=200)
     description = models.TextField()
     status = models.CharField(max_length=50)

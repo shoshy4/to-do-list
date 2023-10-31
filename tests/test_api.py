@@ -2,6 +2,7 @@ from django.urls import reverse
 import pytest
 
 
+# TODO: Убрать print, добавить ожидаемые assert
 @pytest.mark.django_db
 def test_tasks_list_model(taskslists):
     for task_list in taskslists:

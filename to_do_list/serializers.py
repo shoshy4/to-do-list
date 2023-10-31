@@ -2,13 +2,13 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView  # TODO: Удалить не используемое
 
 from .models import Task, TasksList
 
 
 class TaskSerializer(serializers.ModelSerializer):
-    task_owner = serializers.ReadOnlyField(source='task.username')
+    task_owner = serializers.ReadOnlyField(source='task.task_owner')
     task_list = serializers.CharField(required=False, allow_blank=True)
     created_date = serializers.DateTimeField(read_only=True)
 
@@ -39,7 +39,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'password']
+        fields = ['id', 'username', 'password']  # TODO: Добавить поле с подтверждением  пароля
+
+    # TODO: Добавить отдельный метод валидации совпадения паролей
 
     def create(self, validated_data):
         user = User.objects.create(
