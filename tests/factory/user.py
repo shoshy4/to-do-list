@@ -8,4 +8,5 @@ class UserFactory(factory.django.DjangoModelFactory):
 
     username = factory.faker.Faker('name')
     password = "test"
+    confirm_password = "test"
 

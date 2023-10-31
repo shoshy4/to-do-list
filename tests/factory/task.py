@@ -12,7 +12,7 @@ class TaskFactory(factory.django.DjangoModelFactory):
         model = Task
 
     task_list = factory.SubFactory(TasksListFactory)
-    task_owner = factory.SubFactory(UserFactory)
+    owner = factory.SubFactory(UserFactory)
     title = factory.fuzzy.FuzzyText()
     description = factory.fuzzy.FuzzyText()
     status = factory.fuzzy.FuzzyText()

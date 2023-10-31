@@ -1,24 +1,24 @@
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView  # TODO: Удалить не используемое
 
 from .models import Task, TasksList
 
 
 class TaskSerializer(serializers.ModelSerializer):
-    task_owner = serializers.ReadOnlyField(source='task.task_owner')
+    owner = serializers.ReadOnlyField(source='task.owner')
     task_list = serializers.CharField(required=False, allow_blank=True)
     created_date = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Task
-        fields = ['task_list', 'title', 'description', 'status', 'created_date', 'task_owner']
+        fields = ['task_list', 'title', 'description', 'status', 'created_date', 'owner']
 
 
 class TasksListSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source='owner.username')
+    owner = serializers.ReadOnlyField(source='taskslist.owner')
     created_date = serializers.DateTimeField(read_only=True)
 
     class Meta:
@@ -36,12 +36,17 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
+    password = serializers.CharField(write_only=True, validators=[validate_password])
+    confirm_password = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'password']  # TODO: Добавить поле с подтверждением  пароля
+        fields = ['id', 'username', 'password', 'confirm_password']
 
-    # TODO: Добавить отдельный метод валидации совпадения паролей
+    def validate(self, attrs):
+        if attrs['password'] != attrs['confirm_password']:
+            raise serializers.ValidationError({"password": "Password fields didn't match."})
+        return attrs
 
     def create(self, validated_data):
         user = User.objects.create(

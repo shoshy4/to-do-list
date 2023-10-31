@@ -6,9 +6,7 @@ import pytest
 @pytest.mark.django_db
 def test_tasks_list_model(taskslists):
     for task_list in taskslists:
-        print(task_list.owner)
-        print(task_list.title)
-        print(task_list.created_date)
+        assert "title" in task_list
 
 
 @pytest.mark.django_db
@@ -31,7 +29,8 @@ def test_sign_up(api_client_unauth):
     url = reverse('sign_up')
     client, _ = api_client_unauth
     payload = {"username": "dima",
-               "password": "dima12345!"
+               "password": "dima12345!",
+               "confirm_password": "dima12345!"
                }
     response = client.post(url, payload, format='json')
     assert response.status_code == 201
@@ -49,7 +48,7 @@ def test_task_list(api_client_auth, tasks):
 
 @pytest.mark.django_db
 def test_task_list_grouped(api_client_auth, tasks_group, taskslist_1):
-    url = reverse('task_list_create_api', kwargs={'task_list_pk': taskslist_1.id})
+    url = reverse('task_list_create_grouped_api', kwargs={'pk': taskslist_1.id})
     client, _ = api_client_auth
     response = client.get(url)
     assert response.status_code == 200
@@ -63,7 +62,7 @@ def test_task_create(api_client_auth):
     payload = {"title": "A new task",
                "description": "Just a new task. trying",
                "status": "finished",
-               "task_owner": 1
+               "owner": 1
                }
     response = client.post(url, payload, format='json')
     assert response.status_code == 201
@@ -72,12 +71,12 @@ def test_task_create(api_client_auth):
 
 @pytest.mark.django_db
 def test_task_create_grouped(api_client_auth, tasks_group, taskslist_1):
-    url = reverse('task_list_create_api', kwargs={'task_list_pk': taskslist_1.id})
+    url = reverse('task_list_create_grouped_api', kwargs={'pk': taskslist_1.id})
     client, _ = api_client_auth
     payload = {"title": "A new task",
                "description": "Just a new task. trying",
                "status": "finished",
-               "task_owner": 1
+               "owner": 1
                }
     response = client.post(url, payload, format='json')
     assert response.status_code == 201
@@ -95,7 +94,7 @@ def test_task_detail(api_client_auth, task2):
 
 @pytest.mark.django_db
 def test_task_detail_grouped(api_client_auth, task_group, taskslist_1):
-    url = reverse('task_update_detail_remove_api', kwargs={'pk': task_group.id, 'task_list_pk': taskslist_1.id})
+    url = reverse('task_update_detail_remove_grouped_api', kwargs={'task_pk': task_group.id, 'pk': taskslist_1.id})
     client, _ = api_client_auth
     response = client.get(url)
     assert response.status_code == 200
@@ -116,7 +115,7 @@ def test_task_update(api_client_auth, task2):
 
 @pytest.mark.django_db
 def test_task_update_grouped(api_client_auth, task_group, taskslist_1):
-    url = reverse('task_update_detail_remove_api', kwargs={'pk': task_group.id, 'task_list_pk': taskslist_1.id})
+    url = reverse('task_update_detail_remove_grouped_api', kwargs={'task_pk': task_group.id, 'pk': taskslist_1.id})
     client, _ = api_client_auth
     response = client.patch(url, {
         "title": "A new task",
@@ -136,7 +135,7 @@ def test_task_delete(api_client_auth, task2):
 
 @pytest.mark.django_db
 def test_task_delete_grouped(api_client_auth, task_group, taskslist_1):
-    url = reverse('task_update_detail_remove_api', kwargs={'pk': task_group.id, 'task_list_pk': taskslist_1.id})
+    url = reverse('task_update_detail_remove_grouped_api', kwargs={'task_pk': task_group.id, 'pk': taskslist_1.id})
     client, _ = api_client_auth
     response = client.delete(url)
     assert response.status_code == 204

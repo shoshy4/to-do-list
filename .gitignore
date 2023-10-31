@@ -6,7 +6,6 @@ __pycache__
 # Env
 .env
 myvenv/
-venv/
 
 # Database
 #deleted

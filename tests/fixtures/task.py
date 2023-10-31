@@ -11,13 +11,13 @@ def task():
 
 @pytest.fixture
 def task2(user2):
-    task = TaskFactory(task_owner=user2)
+    task = TaskFactory(owner=user2)
     return task
 
 
 @pytest.fixture
 def task_group(taskslist_1, user2):
-    task = TaskFactory(task_owner=user2, task_list=taskslist_1)
+    task = TaskFactory(owner=user2, task_list=taskslist_1)
     return task
 
 
