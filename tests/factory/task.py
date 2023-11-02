@@ -1,6 +1,6 @@
 import factory
 import factory.fuzzy
-from to_do_list.models import Task, TasksList
+from myapp.models import Task, TasksList
 from datetime import datetime
 
 from .tasks_list import TasksListFactory

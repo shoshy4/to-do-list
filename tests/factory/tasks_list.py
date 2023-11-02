@@ -1,6 +1,6 @@
 import factory
 import factory.fuzzy
-from to_do_list.models import TasksList
+from myapp.models import TasksList
 from django.contrib import auth
 from datetime import datetime
 from .user import UserFactory

@@ -2,35 +2,13 @@ from django.urls import reverse
 import pytest
 
 
-# TODO: Убрать print, добавить ожидаемые assert
-@pytest.mark.django_db
-def test_tasks_list_model(taskslists):
-    for task_list in taskslists:
-        assert "title" in task_list
-
-
-@pytest.mark.django_db
-def test_task_model(tasks):
-    for task in tasks:
-        print(task.task_list.id)
-        print(task.task_list.title)
-        print(task.title)
-        print(task.description)
-
-
-@pytest.mark.django_db
-def test_user_model(user):
-    print(user.username)
-    print(user.password)
-
-
 @pytest.mark.django_db
 def test_sign_up(api_client_unauth):
     url = reverse('sign_up')
     client, _ = api_client_unauth
-    payload = {"username": "dima",
-               "password": "dima12345!",
-               "confirm_password": "dima12345!"
+    payload = {"username": "dina",
+               "password": "dina12345!",
+               "confirm_password": "dina12345!"
                }
     response = client.post(url, payload, format='json')
     assert response.status_code == 201

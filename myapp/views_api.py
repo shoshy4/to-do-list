@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filters
 from rest_framework.pagination import PageNumberPagination
 from .filters import TaskFilter
-from to_do_list.models import TasksList, Task
+from myapp.models import TasksList, Task
 from .permissions import IsOwnerPermission
 from .serializers import TasksListSerializer, TaskSerializer, UserSerializer
 from rest_framework import generics

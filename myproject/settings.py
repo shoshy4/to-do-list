@@ -49,7 +49,7 @@ SIMPLE_JWT = {
     "ALGORITHM": "HS256",
     "SIGNING_KEY": SECRET_KEY,
 
-    "TOKEN_OBTAIN_SERIALIZER": "to_do_list.serializers.MyTokenObtainPairSerializer",
+    "TOKEN_OBTAIN_SERIALIZER": "myapp.serializers.MyTokenObtainPairSerializer",
 }
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,

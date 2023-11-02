@@ -25,7 +25,7 @@ def task_group(taskslist_1, user2):
 def tasks_group(taskslist_1, user2):
     tasks = []
     for ix in range(4):
-        task = TaskFactory(task_list=taskslist_1, task_owner=user2)
+        task = TaskFactory(task_list=taskslist_1, owner=user2)
         tasks.append(task)
     return tasks
 
@@ -34,7 +34,7 @@ def tasks_group(taskslist_1, user2):
 def tasks(user2):
     tasks = []
     for i in range(4):
-        task = TaskFactory(task_owner=user2)
+        task = TaskFactory(owner=user2)
         tasks.append(task)
     return tasks
 
