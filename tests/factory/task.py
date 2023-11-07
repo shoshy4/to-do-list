@@ -17,4 +17,3 @@ class TaskFactory(factory.django.DjangoModelFactory):
     description = factory.fuzzy.FuzzyText()
     status = factory.fuzzy.FuzzyText()
     created_date = factory.fuzzy.FuzzyDate(datetime.now().date())
-

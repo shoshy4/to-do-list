@@ -29,4 +29,3 @@ def taskslists(user2):
         task = TasksListFactory(owner=user2)
         taskslists.append(task)
     return taskslists
-

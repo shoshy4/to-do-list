@@ -20,3 +20,7 @@ ehthumbs*.db
 $RECYCLE.BIN/
 
 .idea/
+
+#docker files
+.env.prod.db
+.env.prod

@@ -162,4 +162,3 @@ def test_tasks_list_delete(api_client_auth, taskslist2):
     client, _ = api_client_auth
     response = client.delete(url)
     assert response.status_code == 204
-
